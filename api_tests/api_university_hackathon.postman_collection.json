@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "0ad0299d-fef2-49be-a0ae-9ace1c7c65a4",
+		"name": "api_university_hackathon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is okay\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response isn't empty\", function() {\r",
+							"    pm.expect(pm.response.to.not.be.empty);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status is up\", function() {\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.status === \"UP\").to.true;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{api}}/health",
+					"host": [
+						"{{url}}{{api}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Health Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is okay\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response isn't empty\", function() {\r",
+							"    pm.expect(pm.response.to.not.be.empty);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{api}}/judging/teamTotals",
+					"host": [
+						"{{url}}{{api}}"
+					],
+					"path": [
+						"judging",
+						"teamTotals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Judge All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is okay\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response isn't empty\", function() {\r",
+							"    pm.expect(pm.response.to.not.be.empty);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{api}}/judge/all",
+					"host": [
+						"{{url}}{{api}}"
+					],
+					"path": [
+						"judge",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Get Current Hackathon",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is okay\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response isn't empty\", function() {\r",
+							"    pm.expect(pm.response.to.not.be.empty);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}{{api}}/hackathon/current",
+					"host": [
+						"{{url}}{{api}}"
+					],
+					"path": [
+						"hackathon",
+						"current"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

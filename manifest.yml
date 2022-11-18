@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-university-hackathon
+spec:
+  selector:
+    matchLabels:
+      app: api-university-hackathon
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: api-university-hackathon
+    spec:
+      containers:
+        - name: api-university-hackathon
+          image: us-south1-docker.pkg.dev/absolute-point-359019/university-hackathon/api-university-hackathon:latest
+          env:
+           - name: username
+             valueFrom:
+               secretKeyRef:
+                 key: username
+                 name: username
+           - name: password
+             valueFrom:
+               secretKeyRef:
+                 key: password
+                 name: password
+           - name: email-apikey
+             valueFrom:
+               secretKeyRef:
+                 key: email-apikey
+                 name: email-apikey
+          envFrom:
+            - configMapRef:
+                name: api-university-hackathon
+          ports:
+            - containerPort: 8080
+              name: web
+          livenessProbe:
+            httpGet:
+              path: /ws_infrastructure_university_hackathon/actuator/health
+              port: 8080
+            failureThreshold: 3
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /ws_infrastructure_university_hackathon/actuator/health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ws_infrastructure_university_hackathon/actuator/health
+              port: 8080
+            failureThreshold: 1
+            periodSeconds: 10
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: api-university-hackathon
+  labels:
+    app: api-university-hackathon
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: web
+  selector:
+    app: api-university-hackathon
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-university-hackathon
+data:
+  JAVA_OPTS: -Dserver.port=8080 -Druntime.environment=dev -Dspring.profiles.active=dev

@@ -1,0 +1,79 @@
+
+spring:
+  config:
+    activate:
+      on-profile: dev, test, prod
+  application:
+    name: UARK-Hackathon-WS
+  datasource:
+    hikari:
+      jdbc-url: jdbc:postgresql:///hackathon_PROD?cloudSqlInstance=absolute-point-359019:us-south1:university-hackathon&socketFactory=com.google.cloud.sql.postgres.SocketFactory
+    driver-class-name: org.postgresql.Driver
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+    database: postgresql
+    defer-datasource-initialization: true
+  main:
+    allow-bean-definition-overriding: true
+  sql:
+    init:
+      mode: always
+  cloud:
+    gcp:
+      sql:
+        database-name: university-hackathon
+        instance-connection-name: absolute-point-359019:us-south1:university-hackathon
+  sendgrid:
+    api-key: ${email-apikey}
+
+server:
+  port: 8080
+  servlet:
+    context-path: /ws_infrastructure_university_hackathon
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,metrics,health
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+security:
+  cookies:
+    path: /ws_infrastructure_university_hackathon
+    secure: false
+  jwt:
+    lifetime: 86400 #1 day
+    secret: 792A7CE5442523712115562ACD55655CFFF898D9F2CFD8E195521D1F7AACEC4935D62C55B3A8E714D9F16D2
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test, prod
+
+security:
+  cookies:
+    path: /ws_infrastructure_university_hackathon
+    secure: true
+  jwt:
+    lifetime: 86400 #1 day
+    secret: 792A7CE5442523712115562ACD55655CFFF898D9F2CFD8E195521D1F7AACEC4935D62C55B3A8E714D9F16D2
