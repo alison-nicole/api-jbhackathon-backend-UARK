@@ -37,11 +37,12 @@ public class SignupService {
 
         var participant = createParticipantFromForm(participantRequest);
         participant = participantRepository.save(participant);
-        if (!participantRequest.getTeamName().isEmpty()) {
+        if (!participantRequest.getTeamName().isEmpty()) { //the participant has a team ?
             Optional<Team> teamOptional = teamRepository.findTeamByTeamName(participantRequest.getTeamName());
             if(teamOptional.isPresent()) {
                 saveParticipantToTeam(participant, teamOptional.get());
-            } else {
+            } else { //the participant does not have a team, wants to create a new team
+                //TODO: add strength attribute
                 Team team = teamService.createTeam(participantRequest.getTeamName(),
                        participant.getParticipantID(), participantRequest.getTeamOpen(),
                         0, 0, participantRequest.getTeamColorCode(), participantRequest.getTeamIconCode());
@@ -53,12 +54,17 @@ public class SignupService {
 
         sendRegistrationConfirmationEmail(participant);
 
-        return participant;
-    }
 
+        return participant;
+  }
+    //TODO: work on this method
     public void manageParticipantsWithoutTeam(int hackathonEventID) {
         var listParticipants = participantRepository.findParticipantsByHackathonEventID(hackathonEventID);
-        listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).collect(Collectors.toList());
+
+        //sort participants in increasing score level.
+        //TODO: remove this old line when new one is tested
+        //listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).collect(Collectors.toList());
+        listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).sorted(Comparator.comparingInt(Participant::getScore)).collect(Collectors.toList());
 
         log.info("Distributing {} participants {hackathonEventId = {}}", listParticipants.size(), hackathonEventID);
         if(listParticipants.isEmpty()) return;
@@ -74,6 +80,9 @@ public class SignupService {
         int openSpots = (openTeams.size() * 6) - totalTakenSpotsOnOpenTeams;
         createNeededTeams((int) Math.ceil(((double) listParticipants.size() - openSpots) / 6), openTeams);
         boolean done = false;
+        //here is where participants are ramdomly distributed among teams that have open spots.
+        //this loops executes until the list of participants w/o a team is empty
+        //TODO: verify if teams can be sorted according to their strength
         while(!done) {
             done = distribute(listParticipants, openTeams);
         }
@@ -85,6 +94,15 @@ public class SignupService {
         participant.setLastName(participantRequest.getLastName());
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
         participant.setGraduate(participantRequest.getIsGradStudent());
+
+        //set participant class seniority
+        participant.setClassSeniority(participantRequest.getClassSeniority());
+        //set participant developer type
+        participant.setDevType(participantRequest.getDevType());
+        //set participant score
+        participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
+
+
         //remove these values in future
         participant.setEffectiveTimestamp(null);
         participant.setExpirationTimestamp(null);
@@ -92,6 +110,33 @@ public class SignupService {
         participant.setAccommodations(participantRequest.getAccommodations());
         participant.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
         return participant;
+    }
+
+    /** computes the score (strength metric) of a participant based on their class seniority
+     *  @param classSeniority a string indicating the class seniority
+     * @return an integer value representing the strength based on class seniority
+     * */
+    Integer computeParticipantScore(String classSeniority){
+        var participantScore = 0;
+        if(Objects.equals(classSeniority, "freshman")){
+            participantScore = 1;
+        }
+        else if (Objects.equals(classSeniority, "sophomore")) {
+            participantScore = 2;
+        }
+        else if (Objects.equals(classSeniority, "junior")) {
+            participantScore = 3;
+
+        }
+        else if (Objects.equals(classSeniority, "senior")) {
+            participantScore = 4;
+
+        }
+        else if (Objects.equals(classSeniority, "gradStudent")){
+            participantScore = 5;
+        }
+
+        return participantScore;
     }
 
     void saveParticipantToTeam(Participant participant, Team team) {
@@ -120,6 +165,7 @@ public class SignupService {
                 newName.append(number * iteration);
                 teamName = newName.toString();
             }
+            //TODO: send in team strength
             teamList.add(teamService.createTeam(teamName, -1, true, 0, 0, "#606060", "assets/svg/team-icons/mouse.svg"));
         }
         return teamList;
@@ -128,6 +174,7 @@ public class SignupService {
     boolean distribute(List<Participant> listParticipants, List<Team> listTeams) {
         var participant = listParticipants.get(0);
         var smallestTeam = listTeams.stream().min(Comparator.comparing(Team::getMemberCount));
+        //TODO: find weakest team in the list
         smallestTeam.ifPresent(team -> {
             saveParticipantToTeam(participant, team);
             if (team.getMemberCount() == 6) listTeams.remove(team);
@@ -213,9 +260,12 @@ public class SignupService {
     }
 
     void trim(SignUpFormDTO participantRequest) {
+
         participantRequest.setTeamName(participantRequest.getTeamName().trim());
         participantRequest.setFirstName(participantRequest.getFirstName().trim());
         participantRequest.setLastName(participantRequest.getLastName().trim());
+        participantRequest.setClassSeniority(participantRequest.getClassSeniority().trim());
+        participantRequest.setDevType(participantRequest.getDevType().trim());
     }
 }
 

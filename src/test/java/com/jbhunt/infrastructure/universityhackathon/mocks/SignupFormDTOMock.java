@@ -38,6 +38,10 @@ public class SignupFormDTOMock {
         SignUpFormDTO signUpFormDTO = new SignUpFormDTO();
         signUpFormDTO.setFirstName("First");
         signUpFormDTO.setLastName("Last");
+        //TODO: test class seniority/dev type DTO MOCK
+        signUpFormDTO.setClassSeniority("senior");
+        signUpFormDTO.setDevType("backend");
+        signUpFormDTO.setScore(null);
         signUpFormDTO.setIsGradStudent(false);
         signUpFormDTO.setSchoolEmailAddress("testemail@test.com");
         signUpFormDTO.setAccommodations("Accommodations");

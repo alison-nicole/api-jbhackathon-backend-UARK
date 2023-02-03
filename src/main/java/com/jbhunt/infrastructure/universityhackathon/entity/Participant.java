@@ -32,6 +32,23 @@ public class Participant {
     @Column(name="TeamID")
     private Integer teamID;
 
+    //add class Seniority attribute (string format from signup form) for score = (0-4) 0:HS, 1:FR, 2:SP, 3:JU, 4:SE
+    @Column(name = "ClassSeniority")
+    private String classSeniority;
+
+    //add developer type
+    @Column(name="DevType")
+    private String devType;
+
+    // score level
+    /*
+     * Note:
+     * Using the @Transient annotation to indicate that this field of the entity
+     * should not be persisted to the database, it will not be saved.
+     * */
+    @Transient
+    private Integer score;
+
     @Column(name="Graduate")
     private Boolean graduate;
 

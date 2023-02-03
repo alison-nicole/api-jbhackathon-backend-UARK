@@ -16,4 +16,6 @@ public class TeamDTO {
     private String projectDescription;
     private String projectTechnologyDescription;
     private int publicIndicator;
+
+    //TODO: research if it is needed to add strength attribute
 }
