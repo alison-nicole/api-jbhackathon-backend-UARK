@@ -10,8 +10,8 @@ public class ParticipantMock {
         Participant participant = new Participant();
         participant.setFirstName("First");
         participant.setLastName("Last");
-        participant.setDevType("backend"); //TODO: modify dev type test participant
-        participant.setClassSeniority("senior"); //TODO: modify class seniority for test participant
+        participant.setDevType("backend");
+        participant.setClassSeniority("senior");
         participant.setScore(4);
         participant.setGraduate(false);
         participant.setSchoolEmailAddress("testemail@test.com");

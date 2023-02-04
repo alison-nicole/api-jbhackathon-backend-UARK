@@ -71,8 +71,7 @@ public class TeamService {
             team.setHackathonEventID(hackathonEventID);
             team.setTeamCode(generateTeamCode());
 
-            //TODO: like the team code, generate the team strength here
-            //TODO: check the logic of this statement
+
             team.setTeamStrength(generateTeamStrength(getTeamMembers(team.getTeamID())));
 
 
@@ -109,9 +108,6 @@ public class TeamService {
             membersStrengthSum += participant.getScore();
         }
 
-        //compute the average team strength by dividing the total strength by the number of participants
-        //TODO: consider cases: the number of participants can be zero
-        //this seems to be handled by the getParticipantsOnTeam, but it needs to be checked anyways
         teamStrength = membersStrengthSum/participantsOnTeam.size();
 
         return teamStrength;

@@ -12,7 +12,6 @@ public class SignUpFormDTO {
     private String firstName;
     private String lastName;
     private String schoolEmailAddress;
-    //add class seniority, score, and developer type
     private String classSeniority;
     private String devType;
     private Integer score;

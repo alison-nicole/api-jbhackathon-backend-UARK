@@ -84,7 +84,6 @@ public class SignupServiceTest {
         return team1;
     }
 
-    //TODO: use this test to check a valid form for participants w/o a team
     @Test
     public void saveValidFormWithoutTeam() {
         //ARRANGE
@@ -170,7 +169,7 @@ public class SignupServiceTest {
         Assert.assertEquals(2, testTeam.getMemberCount().intValue());
 
         verifyNoMoreInteractions(mockParticipantRepository);
-        verifyNoMoreInteractions(mockHackathonEventService);;
+        verifyNoMoreInteractions(mockHackathonEventService);
     }
 
     @Test
@@ -241,7 +240,6 @@ public class SignupServiceTest {
         verifyNoMoreInteractions(mockParticipantRepository);
         verifyNoMoreInteractions(mockHackathonEventService);
     }
-    //TODO: uses this test to check distribution of participants w/o a team
     @Test
     public void testManageParticipantsWithoutTeam() {
         var participantList = ParticipantMock.getListParticipantsWithoutTeam(4);
