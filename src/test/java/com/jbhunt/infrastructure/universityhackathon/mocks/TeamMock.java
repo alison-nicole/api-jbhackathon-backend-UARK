@@ -10,11 +10,13 @@ public class TeamMock {
         Team team1 = new Team();
         team1.setTeamName("TEST 1");
         team1.setTeamCode("123456");
+        team1.setTeamStrength(0.0);
         team1.setTeamColorCode("#ffffff");
         team1.setTeamIconCode("medal");
         team1.setTeamID(1);
         return team1;
     }
+
 
     public static Team getTeamWithScoreMock() {
         Team team1 = new Team();
@@ -49,11 +51,12 @@ public class TeamMock {
         return teamList;
     }
 
+    //TODO: added strength to see if it fixes the null value.
     public static List<Team> getTeamList(int numberTeams) {
         List<Team> teamList = new ArrayList<>();
         for(int i = 0; i < numberTeams; i++) {
             var team = getTeamMock();
-            team.setTeamID(i);
+            team.setTeamID(0);
             team.setTeamName("Team " + i);
             team.setMemberCount((i + 1) % 6);
             team.setGraduateCount((i+1) % 2);
@@ -76,6 +79,30 @@ public class TeamMock {
         Team team2 = new Team();
         team2.setTeamName("TEST 2");
         team2.setTeamCode("111111");
+        team2.setTeamColorCode("#000000");
+        team2.setTeamIconCode("motorcycle");
+        team2.setTeamID(2);
+
+        teamList.add(team1);
+        teamList.add(team2);
+        return teamList;
+    }
+
+    public static List<Team> getTeamListWithStrengthTeam() {
+        List<Team> teamList = new ArrayList<>();
+        Team team1 = new Team();
+        team1.setTeamName("TEST 1");
+        team1.setTeamCode("123456");
+        team1.setTeamStrength(1.0);
+        team1.setTeamColorCode("#ffffff");
+        team1.setTeamIconCode("medal");
+        team1.setTeamID(1);
+        team1.setScore(700);
+
+        Team team2 = new Team();
+        team2.setTeamName("TEST 2");
+        team2.setTeamCode("111111");
+        team2.setTeamStrength(0.0);
         team2.setTeamColorCode("#000000");
         team2.setTeamIconCode("motorcycle");
         team2.setTeamID(2);

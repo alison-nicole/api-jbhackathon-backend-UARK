@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -67,6 +68,7 @@ public class SignupServiceTest {
         team1.setTeamID(1);
         team1.setTeamOwnerID(1);
         team1.setMemberCount(0);
+        team1.setTeamStrength(0.0);
         team1.setGraduateCount(0);
         return team1;
     }
@@ -245,14 +247,27 @@ public class SignupServiceTest {
     @Test
     public void testManageParticipantsWithoutTeam() {
         var participantList = ParticipantMock.getListParticipantsWithoutTeam(4);
+       // var memberList = ParticipantMock.getListCustomParticipantsWithTeam(2);
         var teamList = TeamMock.getTeamList(1);
         var testTeam = getTeamMock();
 
+
+
+
         when(mockParticipantRepository.findParticipantsByHackathonEventID(1)).thenReturn(participantList);
+
         when(mockParticipantRepository.save(any(Participant.class))).thenReturn(participantList.get(0));
+
+//        //
+//        when(mockTeamService.getTeamMembers(1)).thenReturn(memberList);
+//        when(signUpService.generateTeamStrength(memberList)).thenReturn();
+//        //when(mockTeamRepository.findTeamByTeamID(1)).thenReturn(Optional.of(testTeam));
+//        //when(mockParticipantRepository.findParticipantsByTeamID(1)).thenReturn(memberList);
+//        //
+
         when(mockTeamRepository.findAllByHackathonEventID(1)).thenReturn(teamList);
         when(mockTeamRepository.save(any(Team.class))).thenReturn(testTeam);
-
+        
         signUpService.manageParticipantsWithoutTeam(1);
 
         verify(mockParticipantRepository).findParticipantsByHackathonEventID(1);
@@ -260,8 +275,31 @@ public class SignupServiceTest {
         verify(mockParticipantRepository, times(4)).save(any(Participant.class));
         verify(mockTeamRepository, times(4)).save(any(Team.class));
 
+
         verifyNoMoreInteractions(mockParticipantRepository);
         verifyNoMoreInteractions(mockTeamRepository);
+    }
+
+    @Test
+    public void generateTeamStrengthTest(){
+        //arrange
+        Participant memberMock1 = ParticipantMock.getTestCustomParticipant("freshman","backend",1);
+        Participant memberMock2 = ParticipantMock.getTestCustomParticipant("senior","frontend",4);
+        List<Participant> memberList = new ArrayList<>();
+        memberList.add(memberMock1);
+        memberList.add(memberMock2);
+        Team team = TeamMock.getTeamMock();
+        team.setTeamID(123);
+        team.setTeamStrength(2.5);
+        double teamStrengthTest = team.getTeamStrength();
+
+        //act
+        double teamStrengthActual = signUpService.generateTeamStrength(memberList);
+
+        //assert
+        assertEquals(teamStrengthTest,teamStrengthActual,0.001);
+
+
     }
 
     @Test
@@ -307,6 +345,40 @@ public class SignupServiceTest {
 
         signUpService.distribute(participantList, teamList);
 
+        verify(mockParticipantRepository).save(any(Participant.class));
+
+        Assert.assertTrue(teamList.isEmpty());
+
+        verifyNoMoreInteractions(mockParticipantRepository);
+    }
+
+
+    @Test
+    public void saveParticipantToTeamTest(){
+        var team = getTeamMock();
+        var testTeam = getTeamMock();
+        var testParticipant = ParticipantMock.getTestParticipant();
+        var memberList = ParticipantMock.getListCustomParticipantsWithTeam(2);
+
+        when(mockTeamService.getTeamMembers(1)).thenReturn(memberList);
+        when(mockTeamRepository.save(any(Team.class))).thenReturn(testTeam);
+
+        signUpService.saveParticipantToTeam(testParticipant,team);
+
+        verify(mockTeamService).getTeamMembers(1);
+
+
+    }
+    @Test
+    public void testDistributeTeamsFindWeakestBFD(){
+        var participantList = ParticipantMock.getListParticipantsWithoutTeam(1);
+        var teamList = TeamMock.getTeamList(1);
+        teamList.get(0).setMemberCount(5);
+
+
+        when(mockParticipantRepository.save(any(Participant.class))).thenReturn(participantList.get(0));
+
+        signUpService.distribute(participantList, teamList);
         verify(mockParticipantRepository).save(any(Participant.class));
 
         Assert.assertTrue(teamList.isEmpty());

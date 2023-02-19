@@ -37,12 +37,12 @@ public class SignupService {
 
         var participant = createParticipantFromForm(participantRequest);
         participant = participantRepository.save(participant);
-        if (!participantRequest.getTeamName().isEmpty()) { //the participant has a team ?
+        if (!participantRequest.getTeamName().isEmpty()) { //participant has a team code
             Optional<Team> teamOptional = teamRepository.findTeamByTeamName(participantRequest.getTeamName());
             if(teamOptional.isPresent()) {
                 saveParticipantToTeam(participant, teamOptional.get());
             } else { //the participant does not have a team, wants to create a new team
-                //TODO: add strength attribute
+
                 Team team = teamService.createTeam(participantRequest.getTeamName(),
                        participant.getParticipantID(), participantRequest.getTeamOpen(),
                         0, 0, participantRequest.getTeamColorCode(), participantRequest.getTeamIconCode());
@@ -61,9 +61,11 @@ public class SignupService {
     public void manageParticipantsWithoutTeam(int hackathonEventID) {
         var listParticipants = participantRepository.findParticipantsByHackathonEventID(hackathonEventID);
 
-        //sort participants in increasing score level.
+
         //TODO: remove this old line when new one is tested
         //listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).collect(Collectors.toList());
+
+        //sort participants in increasing score level.
         listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).sorted(Comparator.comparingInt(Participant::getScore)).collect(Collectors.toList());
 
         log.info("Distributing {} participants {hackathonEventId = {}}", listParticipants.size(), hackathonEventID);
@@ -85,7 +87,12 @@ public class SignupService {
         //TODO: verify if teams can be sorted according to their strength
         while(!done) {
             done = distribute(listParticipants, openTeams);
+
+
+
         }
+
+
     }
 
     Participant createParticipantFromForm(SignUpFormDTO participantRequest) {
@@ -142,10 +149,21 @@ public class SignupService {
     void saveParticipantToTeam(Participant participant, Team team) {
         participant.setTeamID(team.getTeamID());
         team.setMemberCount(team.getMemberCount() + 1);
+
+
+        /*NOTE:
+            the strength update is made for all 3 cases of teams (participant has a team code, participants creates a team, or participant in
+            assigned to a "random" team)
+            every time a participant is added, this method is called
+        * */
+        //TODO: check functionality of the strength method
+        team.setTeamStrength(generateTeamStrength(teamService.getTeamMembers(team.getTeamID())));
         team.setGraduateCount(team.getGraduateCount() + (Boolean.TRUE.equals(participant.getGraduate()) ? 1 : 0));
         if (team.getMemberCount() == 1) team.setTeamOwnerID(participant.getParticipantID());
         else if (team.getMemberCount() == 6) team.setOpen(false);
         teamRepository.save(team);
+
+
     }
 
 
@@ -165,7 +183,6 @@ public class SignupService {
                 newName.append(number * iteration);
                 teamName = newName.toString();
             }
-            //TODO: send in team strength
             teamList.add(teamService.createTeam(teamName, -1, true, 0, 0, "#606060", "assets/svg/team-icons/mouse.svg"));
         }
         return teamList;
@@ -173,15 +190,50 @@ public class SignupService {
 
     boolean distribute(List<Participant> listParticipants, List<Team> listTeams) {
         var participant = listParticipants.get(0);
-        var smallestTeam = listTeams.stream().min(Comparator.comparing(Team::getMemberCount));
-        //TODO: find weakest team in the list
+        //var smallestTeam = listTeams.stream().min(Comparator.comparing(Team::getMemberCount));
+
+       //testing distribution using BFD(strongest participants to the weakest team)
+        var weakestTeam = listTeams.stream().min(Comparator.comparingDouble(Team::getTeamStrength));
+        //TODO: find weakest team in the list and put strongest participant in it
+        weakestTeam.ifPresent(team -> {
+            saveParticipantToTeam(participant,team);
+            if(team.getMemberCount() == 6) {
+                listTeams.remove(team);
+            }
+        });
+        /*
         smallestTeam.ifPresent(team -> {
             saveParticipantToTeam(participant, team);
             if (team.getMemberCount() == 6) listTeams.remove(team);
         });
+
+         */
         participantRepository.save(participant);
         listParticipants.remove(0);
         return (listParticipants.isEmpty());
+    }
+
+
+    /**
+     * method
+     * Generate Teams Strength
+     * @param: a list of objects of type pariticipant containing the members in the team
+     * @return: a numeric value of type double that represents the strength of the team
+     * */
+    public Double generateTeamStrength(List<Participant> participantsOnTeam){
+        Double teamStrength = 0.0;
+        var membersStrengthSum = 0.0;
+        var teamSize = (double)participantsOnTeam.size();
+
+        if(participantsOnTeam.size() == 0)
+            return teamStrength;
+        for (Participant participant : participantsOnTeam){
+            membersStrengthSum += (double)participant.getScore();
+
+        }
+
+        teamStrength = membersStrengthSum/teamSize;
+        return teamStrength;
     }
 
     void sendRegistrationConfirmationEmail(Participant participant) {
@@ -264,8 +316,10 @@ public class SignupService {
         participantRequest.setTeamName(participantRequest.getTeamName().trim());
         participantRequest.setFirstName(participantRequest.getFirstName().trim());
         participantRequest.setLastName(participantRequest.getLastName().trim());
-        participantRequest.setClassSeniority(participantRequest.getClassSeniority().trim());
-        participantRequest.setDevType(participantRequest.getDevType().trim());
+
+        //FIXME: remove this trim (check against signup branch
+//        participantRequest.setClassSeniority(participantRequest.getClassSeniority().trim());
+//        participantRequest.setDevType(participantRequest.getDevType().trim());
     }
 }
 
