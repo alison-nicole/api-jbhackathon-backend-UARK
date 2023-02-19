@@ -38,6 +38,9 @@ public class Participant {
     @Column(name="DevType")
     private String devType;
 
+    @Column(name="TechStack")
+    private String[] techStack;
+
     @Transient
     private Integer score;
 
@@ -52,4 +55,9 @@ public class Participant {
 
     @Column(name="ExpirationTimestamp")
     private Date expirationTimestamp;
+
+
+    public void setTechStack(String... strings) {
+        techStack = strings;
+    }
 }

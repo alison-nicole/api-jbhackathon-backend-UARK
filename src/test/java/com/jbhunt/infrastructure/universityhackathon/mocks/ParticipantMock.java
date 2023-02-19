@@ -23,6 +23,25 @@ public class ParticipantMock {
         return participant;
     }
 
+    public static Participant getTestParticipantWithTechStack() {
+        Participant participant = new Participant();
+        participant.setFirstName("First");
+        participant.setLastName("Last");
+        participant.setDevType("backend");
+        participant.setTechStack("Python","Java","MongoDB","React");
+        participant.setClassSeniority("senior");
+        participant.setScore(4);
+        participant.setGraduate(false);
+        participant.setSchoolEmailAddress("testemail@test.com");
+        participant.setAccommodations("Accommodations");
+        participant.setTeamID(null);
+        participant.setEffectiveTimestamp(null);
+        participant.setExpirationTimestamp(null);
+        participant.setHackathonEventID(1);
+        return participant;
+    }
+
+
     public static Participant getTestGraduateParticipant() {
         Participant participant = new Participant();
         participant.setFirstName("First");

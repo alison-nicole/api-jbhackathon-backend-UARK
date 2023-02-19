@@ -107,6 +107,30 @@ public class SignupServiceTest {
     }
 
     @Test
+    public void saveParticipantWithTechStackFromValidForm(){
+        //ARRANGE
+        var hackathonEvent = getHackathonEvent();
+        var testParticipant = ParticipantMock.getTestParticipantWithTechStack();
+
+        when(mockHackathonEventService.getCurrentHackathon()).thenReturn(hackathonEvent);
+        when(mockParticipantRepository.save(any(Participant.class))).thenReturn(ParticipantMock.getCreatedParticipant(testParticipant));
+
+        //ACT
+        Participant createdParticipant = signUpService.saveParticipant(SignupFormDTOMock.getValidSignUpWithTechStackFormDTOWithoutTeam());
+
+        //ASSERT
+        verify(mockHackathonEventService).getCurrentHackathon();
+        verify(mockParticipantRepository, times(2)).save(any(Participant.class));
+
+        Assert.assertNotNull(createdParticipant);
+        Assert.assertEquals(testParticipant, createdParticipant);
+        verifyNoMoreInteractions(mockParticipantRepository);
+        verifyNoMoreInteractions(mockHackathonEventService);
+    }
+
+
+
+    @Test
     public void saveValidFormWithCreatedTeam() {
         //ARRANGE
         var hackathonEvent = getHackathonEvent();

@@ -52,6 +52,25 @@ public class SignupFormDTOMock {
         return signUpFormDTO;
     }
 
+    public static SignUpFormDTO getValidSignUpWithTechStackFormDTOWithoutTeam() {
+        SignUpFormDTO signUpFormDTO = new SignUpFormDTO();
+        signUpFormDTO.setFirstName("First");
+        signUpFormDTO.setLastName("Last");
+        signUpFormDTO.setClassSeniority("senior");
+        signUpFormDTO.setDevType("backend");
+        signUpFormDTO.setTechStack("Python","Java","MongoDB","React");
+        signUpFormDTO.setScore(4);
+        signUpFormDTO.setIsGradStudent(false);
+        signUpFormDTO.setSchoolEmailAddress("testemail@test.com");
+        signUpFormDTO.setAccommodations("Accommodations");
+        signUpFormDTO.setTeamName("");
+        signUpFormDTO.setTeamOpen(null);
+        signUpFormDTO.setTeamColorCode("");
+        signUpFormDTO.setTeamIconCode("");
+
+        return signUpFormDTO;
+    }
+
     public static SignUpFormDTO getValidSignUpFormDTOGradStudentJoinTeam() {
         SignUpFormDTO signUpFormDTO = new SignUpFormDTO();
         signUpFormDTO.setFirstName("First");

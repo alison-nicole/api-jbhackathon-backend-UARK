@@ -53,7 +53,6 @@ public class SignupService {
 
         sendRegistrationConfirmationEmail(participant);
 
-
         return participant;
   }
 
@@ -89,6 +88,7 @@ public class SignupService {
         participant.setGraduate(participantRequest.getIsGradStudent());
         participant.setClassSeniority(participantRequest.getClassSeniority());
         participant.setDevType(participantRequest.getDevType());
+        participant.setTechStack(participantRequest.getTechStack());
         participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
         participant.setEffectiveTimestamp(null);
         participant.setExpirationTimestamp(null);
