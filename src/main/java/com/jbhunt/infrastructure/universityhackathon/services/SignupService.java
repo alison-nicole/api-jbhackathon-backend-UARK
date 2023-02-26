@@ -84,10 +84,10 @@ public class SignupService {
         participant.setFirstName(participantRequest.getFirstName());
         participant.setLastName(participantRequest.getLastName());
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
-        participant.setGraduate(participantRequest.getIsGradStudent());
+        participant.setGraduateIndicator(participantRequest.getIsGradStudent());
         //remove these values in future
-        participant.setEffectiveTimestamp(null);
-        participant.setExpirationTimestamp(null);
+//        participant.setEffectiveTimestamp(null);
+//        participant.setExpirationTimestamp(null);
 
         participant.setAccommodations(participantRequest.getAccommodations());
         participant.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
@@ -97,7 +97,7 @@ public class SignupService {
     void saveParticipantToTeam(Participant participant, Team team) {
         participant.setTeamID(team.getTeamID());
         team.setMemberCount(team.getMemberCount() + 1);
-        team.setGraduateCount(team.getGraduateCount() + (Boolean.TRUE.equals(participant.getGraduate()) ? 1 : 0));
+        team.setGraduateCount(team.getGraduateCount() + (Boolean.TRUE.equals(participant.getGraduateIndicator()) ? 1 : 0));
         if (team.getMemberCount() == 1) team.setTeamOwnerID(participant.getParticipantID());
         else if (team.getMemberCount() == 6) team.setOpen(false);
         teamRepository.save(team);

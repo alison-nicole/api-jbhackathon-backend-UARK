@@ -32,15 +32,24 @@ public class Participant {
     @Column(name="TeamID")
     private Integer teamID;
 
-    @Column(name="Graduate")
-    private Boolean graduate;
+    @Column(name="GraduateIndicator")
+    private Boolean graduateIndicator;
 
     @Column(name="Accommodations")
     private String accommodations;
 
-    @Column(name="EffectiveTimestamp")
-    private Date effectiveTimestamp;
+    @Column(name="major")
+    private String major;
 
-    @Column(name="ExpirationTimestamp")
-    private Date expirationTimestamp;
+    @Column(name="universityName")
+    private String universityName;
+
+    @Column(name="graduateYear")
+    private Integer graduateYear;
+
+    @Column(name="discordName")
+    private String discordName;
+
+    @Column(name="tShirtSize")
+    private String tShirtSize;
 }

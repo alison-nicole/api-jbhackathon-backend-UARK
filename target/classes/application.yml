@@ -7,7 +7,7 @@ spring:
     name: UARK-Hackathon-WS
   datasource:
     hikari:
-      jdbc-url: jdbc:postgresql:///hackathon_PROD?cloudSqlInstance=absolute-point-359019:us-south1:university-hackathon&socketFactory=com.google.cloud.sql.postgres.SocketFactory
+      jdbc-url: jdbc:postgresql:///hackathon_DEV?cloudSqlInstance=absolute-point-359019:us-south1:university-hackathon&socketFactory=com.google.cloud.sql.postgres.SocketFactory
     driver-class-name: org.postgresql.Driver
 
   h2:
