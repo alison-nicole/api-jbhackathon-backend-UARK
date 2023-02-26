@@ -10,12 +10,10 @@ public class ParticipantMock {
         Participant participant = new Participant();
         participant.setFirstName("First");
         participant.setLastName("Last");
-        participant.setGraduate(false);
+        participant.setGraduateIndicator(false);
         participant.setSchoolEmailAddress("testemail@test.com");
         participant.setAccommodations("Accommodations");
         participant.setTeamID(null);
-        participant.setEffectiveTimestamp(null);
-        participant.setExpirationTimestamp(null);
         participant.setHackathonEventID(1);
         return participant;
     }
@@ -24,12 +22,10 @@ public class ParticipantMock {
         Participant participant = new Participant();
         participant.setFirstName("First");
         participant.setLastName("Last");
-        participant.setGraduate(true);
+        participant.setGraduateIndicator(true);
         participant.setSchoolEmailAddress("testemail@test.com");
         participant.setAccommodations("Accommodations");
         participant.setTeamID(null);
-        participant.setEffectiveTimestamp(null);
-        participant.setExpirationTimestamp(null);
         participant.setHackathonEventID(1);
         return participant;
     }
@@ -41,7 +37,7 @@ public class ParticipantMock {
             participant.setParticipantID(i);
             participant.setHackathonEventID(1);
             if((i / 3) == 0)
-                participant.setGraduate(true);
+                participant.setGraduateIndicator(true);
             participantList.add(participant);
         }
         return participantList;

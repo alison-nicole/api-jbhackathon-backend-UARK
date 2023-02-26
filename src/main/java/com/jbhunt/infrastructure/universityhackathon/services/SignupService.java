@@ -83,12 +83,13 @@ public class SignupService {
         var participant = new Participant();
         participant.setFirstName(participantRequest.getFirstName());
         participant.setLastName(participantRequest.getLastName());
+        participant.setMajor(participantRequest.getMajor());
+        participant.setUniversityName(participantRequest.getUniversityName());
+        participant.setGraduateYear(participantRequest.getGraduateYear());
+        participant.setDiscordName(participantRequest.getDiscordName());
+        participant.setTShirtSize(participantRequest.getTShirtSize());
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
         participant.setGraduateIndicator(participantRequest.getIsGradStudent());
-        //remove these values in future
-//        participant.setEffectiveTimestamp(null);
-//        participant.setExpirationTimestamp(null);
-
         participant.setAccommodations(participantRequest.getAccommodations());
         participant.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
         return participant;
