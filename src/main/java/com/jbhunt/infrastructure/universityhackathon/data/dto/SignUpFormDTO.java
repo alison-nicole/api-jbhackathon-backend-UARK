@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 public class SignUpFormDTO {
     private String firstName;
     private String lastName;
+    private String major;
+    private String universityName;
+    private Integer graduateYear;
+    private String discordName;
+    private String tShirtSize;
     private String schoolEmailAddress;
     private Boolean isGradStudent;
     private String teamName;
