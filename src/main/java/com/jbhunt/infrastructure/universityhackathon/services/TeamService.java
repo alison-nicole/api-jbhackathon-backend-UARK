@@ -34,7 +34,7 @@ public class TeamService {
 
         //get hackathonEventID
         int hackathonEventID = -1;
-       List<HackathonEvent> current = hackathonEventService.getUpcomingHackathonEvents(100);
+       List<HackathonEvent> current = hackathonEventService.getCurrentHackathon();
         if(!current.isEmpty()) {
             hackathonEventID = current.get(0).getHackathonEventID();
 
@@ -63,7 +63,7 @@ public class TeamService {
 
         //get hackathonEventID
         int hackathonEventID = -1;
-        List<HackathonEvent> current = hackathonEventService.getUpcomingHackathonEvents(30);
+        List<HackathonEvent> current = hackathonEventService.getCurrentHackathon();
         if(!current.isEmpty()) {
             hackathonEventID = current.get(0).getHackathonEventID();
 
