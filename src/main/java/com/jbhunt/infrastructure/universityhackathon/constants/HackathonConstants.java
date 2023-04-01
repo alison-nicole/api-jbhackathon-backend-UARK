@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class HackathonConstants {
     public static final String JUDGE = "/judge";
+    public static final String ADMINISTRATOR = "/administrator";
     public static final String JUDGEMENT_CATEGORY = "/judgment-category";
     public static final String SCHOOL = "/school";
     public static final String TEAM = "/team";

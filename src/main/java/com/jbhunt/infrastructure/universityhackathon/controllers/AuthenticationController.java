@@ -2,9 +2,12 @@ package com.jbhunt.infrastructure.universityhackathon.controllers;
 
 import com.jbhunt.infrastructure.universityhackathon.configuration.SecurityProperties;
 import com.jbhunt.infrastructure.universityhackathon.entity.Judge;
+import com.jbhunt.infrastructure.universityhackathon.entity.Administrator;
 import com.jbhunt.infrastructure.universityhackathon.enums.CodeType;
+import com.jbhunt.infrastructure.universityhackathon.security.user.AdministratorUser;
 import com.jbhunt.infrastructure.universityhackathon.security.user.base.AuthorizedUser;
 import com.jbhunt.infrastructure.universityhackathon.security.user.JudgeUser;
+import com.jbhunt.infrastructure.universityhackathon.services.AdministratorService;
 import com.jbhunt.infrastructure.universityhackathon.services.JudgeService;
 import com.jbhunt.infrastructure.universityhackathon.services.VerificationService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class AuthenticationController {
     private final VerificationService verificationService;
     private final JudgeService judgeService;
+    private final AdministratorService administratorService;
     private final SecurityProperties securityProperties;
 
     @PostMapping(value = "/auth/authenticate")
@@ -51,5 +55,16 @@ public class AuthenticationController {
         response.addCookie(verificationService.createVerificationCookie(user, code));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/auth/verify/administrator")
+    public ResponseEntity<String> verifyAdministrator(@RequestBody String email, HttpServletResponse response){
+        Optional<Administrator> found = administratorService.getAdministratorByEmail(email);
+        AdministratorUser user = new AdministratorUser(securityProperties, String.valueOf(found.get().getAdministratorID()));
+        String code = verificationService.generateAndSend(email, CodeType.NUMERIC,6);
+        response.addCookie(verificationService.createVerificationCookie(user,code));
+
+
+        return  new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
