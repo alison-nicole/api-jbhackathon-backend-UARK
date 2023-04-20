@@ -2,6 +2,7 @@ package com.jbhunt.infrastructure.universityhackathon.controllers;
 
 import com.jbhunt.infrastructure.universityhackathon.data.dto.PrizesDTO;
 import com.jbhunt.infrastructure.universityhackathon.entity.Prizes;
+import static com.jbhunt.infrastructure.universityhackathon.constants.HackathonConstants.PRIZES;
 import com.jbhunt.infrastructure.universityhackathon.repository.PrizesRepository;
 import com.jbhunt.infrastructure.universityhackathon.services.PrizesService;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+
+
 @Slf4j
 @CrossOrigin
 @RestController
+@RequestMapping(value = PRIZES)
 @RequiredArgsConstructor
 public class PrizesController {
     private final PrizesService prizesService;
