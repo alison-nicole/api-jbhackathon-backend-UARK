@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping(value = PRIZES)
+//@RequestMapping(value = PRIZES)
 @RequiredArgsConstructor
 public class PrizesController {
     private final PrizesService prizesService;

@@ -16,7 +16,7 @@ public class Prizes {
     @Column(name = "PrizeID")
     private Integer prizeID;
 
-    @Column(name = "HackathonEventID", nullable = false)
+    @Column(name = "HackathonEventID", nullable=false)
     private Integer hackathonEventID;
 
     @Column(name="PrizeName", nullable=false)
