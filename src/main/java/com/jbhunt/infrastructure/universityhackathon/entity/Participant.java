@@ -38,7 +38,7 @@ public class Participant {
     @Column(name="DevType")
     private String devType;
 
-    @Transient
+    @Column(name = "score")
     private Integer score;
 
     @Column(name="Graduate")
@@ -47,9 +47,4 @@ public class Participant {
     @Column(name="Accommodations")
     private String accommodations;
 
-    @Column(name="EffectiveTimestamp")
-    private Date effectiveTimestamp;
-
-    @Column(name="ExpirationTimestamp")
-    private Date expirationTimestamp;
 }

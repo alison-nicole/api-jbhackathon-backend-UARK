@@ -49,8 +49,7 @@ public class Team {
     @Column(name="TeamIconCode")
     private String teamIconCode;
 
-    //TODO: consider if this attribute should be added to the DB
-    @Transient
+    @Column(name = "TeamStrength")
     private Double teamStrength;
 
 }
