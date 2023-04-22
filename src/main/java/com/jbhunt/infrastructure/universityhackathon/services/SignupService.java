@@ -85,14 +85,17 @@ public class SignupService {
         participant.setFirstName(participantRequest.getFirstName());
         participant.setLastName(participantRequest.getLastName());
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
-        participant.setGraduate(participantRequest.getIsGradStudent());
         participant.setClassSeniority(participantRequest.getClassSeniority());
         participant.setDevType(participantRequest.getDevType());
-        participant.setTechStack(participantRequest.getTechStack());
+//        participant.setTechStack(participantRequest.getTechStack());
         participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
-        participant.setEffectiveTimestamp(null);
-        participant.setExpirationTimestamp(null);
         participant.setAccommodations(participantRequest.getAccommodations());
+        participant.setMajor(participantRequest.getMajor());
+        participant.setUniversityName(participantRequest.getUniversityName());
+        participant.setGraduateYear(participantRequest.getGraduateYear());
+        participant.setDiscordName(participantRequest.getDiscordName());
+        participant.setTShirtSize(participantRequest.getTShirtSize());
+        participant.setGraduateIndicator(participantRequest.getIsGradStudent());
         participant.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
         return participant;
     }
@@ -101,6 +104,7 @@ public class SignupService {
      *  @param classSeniority a string indicating the class seniority
      * @return an integer value representing the strength based on class seniority
      * */
+    //FIXME: add prev years of participation
     Integer computeParticipantScore(String classSeniority){
         var participantScore = 0;
         if(Objects.equals(classSeniority, "freshman")){
@@ -127,7 +131,7 @@ public class SignupService {
     void saveParticipantToTeam(Participant participant, Team team) {
         participant.setTeamID(team.getTeamID());
         team.setMemberCount(team.getMemberCount() + 1);
-        team.setGraduateCount(team.getGraduateCount() + (Boolean.TRUE.equals(participant.getGraduate()) ? 1 : 0));
+        team.setGraduateCount(team.getGraduateCount() + (Boolean.TRUE.equals(participant.getGraduateIndicator()) ? 1 : 0));
         if (team.getMemberCount() == 1) team.setTeamOwnerID(participant.getParticipantID());
         else if (team.getMemberCount() == 6) team.setOpen(false);
         teamRepository.save(team);

@@ -32,32 +32,41 @@ public class Participant {
     @Column(name="TeamID")
     private Integer teamID;
 
+    @Column(name="GraduateIndicator")
+    private Boolean graduateIndicator;
+
+    @Column(name="Accommodations")
+    private String accommodations;
+
+    @Column(name="major")
+    private String major;
+
+    @Column(name="universityName")
+    private String universityName;
+
+    @Column(name="GraduateYear")
+    private Integer graduateYear;
+
+    @Column(name="DiscordName")
+    private String discordName;
+
+    @Column(name="tShirtSize")
+    private String tShirtSize;
+
     @Column(name = "ClassSeniority")
     private String classSeniority;
 
     @Column(name="DevType")
     private String devType;
 
-    @Column(name="TechStack")
-    private String[] techStack;
-
-    @Transient
+    @Column(name = "score")
     private Integer score;
 
-    @Column(name="Graduate")
-    private Boolean graduate;
 
-    @Column(name="Accommodations")
-    private String accommodations;
-
-    @Column(name="EffectiveTimestamp")
-    private Date effectiveTimestamp;
-
-    @Column(name="ExpirationTimestamp")
-    private Date expirationTimestamp;
+    //TODO: add tech stack,
 
 
-    public void setTechStack(String... strings) {
-        techStack = strings;
-    }
+//    public void setTechStack(String... strings) {
+//        techStack = strings;
+//    }
 }

@@ -15,6 +15,7 @@ public class SignUpFormDTO {
     private String classSeniority;
     private String devType;
     private Integer score;
+    private String phoneNumber;
     private String[] techStack;
     private Boolean isGradStudent;
     private String teamName;
@@ -22,8 +23,14 @@ public class SignUpFormDTO {
     private String teamColorCode;
     private String teamIconCode;
     private String accommodations;
+    private String major;
+    private String universityName;
+    private Integer graduateYear;
+    private String discordName;
+    private String tShirtSize;
 
-    public void setTechStack(String...strings) {
-        techStack = strings;
-    }
+
+//    public void setTechStack(String...strings) {
+//        techStack = strings;
+//    }
 }
