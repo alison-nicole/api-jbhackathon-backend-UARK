@@ -80,7 +80,10 @@ public class PrizesService {
     }
     public boolean getByPrizeName(String prizeName){
         try{
-            Optional<Prizes> prize = prizesRepository.findPrizeByPrizeName(prizeName);
+            Optional<Prizes> prize = prizesRepository.findPrizeByPrizeNameIgnoreCase(prizeName);
+            //TODO: remove logs
+            log.info(prizeName);
+            log.info(prize.get().getPrizeName());
             return prize.isPresent();
         }
         catch (Exception e){
@@ -89,9 +92,46 @@ public class PrizesService {
         }
     }
 
+    public boolean removePrizeByPrizeName(String prizeName){
+        try{
+            Optional<Prizes> prizesOptional = prizesRepository.findPrizeByPrizeName(prizeName);
+            if(prizesOptional.isPresent()){
+                prizesOptional.ifPresent(prizesRepository::delete);
+                return true;
+            }
+        }
+        catch (Exception e){
+            log.info("prize does not exist");
+            log.error(e.getMessage());
+            return false;
+        }
+        return false;
+    }
+    public boolean removeAllPrizes() {
+        prizesRepository.deleteAll();
+        return true;
+    }
+
     public List<Prizes> getAllPrizes() {
         return prizesRepository.findAll();
     }
+
+    public Prizes updatePrize(String prizeName, PrizesDTO currentPrize) {
+        Optional<Prizes> prizesOptional = prizesRepository.findPrizeByPrizeName(prizeName);
+        log.info("current prize name = "+ currentPrize.getPrizeName());
+        if (prizesOptional.isPresent()){
+            var prize = prizesOptional.get();
+            prize.setPrizeName(currentPrize.getPrizeName());
+            prize.setPrizeLink(currentPrize.getPrizeLink());
+            prize.setPrizeImageCode(currentPrize.getPrizeImageCode());
+            prize.setPrizeMonetaryValue(currentPrize.getPrizeMonetaryValue());
+            return prizesRepository.save(prize);
+        }
+        return null;
+    }
+
+
+
 //    public List<Prizes> getAllByHackathonEventID(int hackathonEventID){
 //        return prizesRepository.findAllByHackathonEventID(hackathonEventID);
 //    }

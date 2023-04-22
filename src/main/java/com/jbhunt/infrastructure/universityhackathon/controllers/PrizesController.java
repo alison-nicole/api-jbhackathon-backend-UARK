@@ -31,7 +31,9 @@ public class PrizesController {
     public ResponseEntity<Prizes> savePrize(@Valid @RequestBody PrizesDTO newPrize){
         try{
             Prizes prize = prizesService.savePrize(newPrize);
+            log.info("prize saved");
             return new ResponseEntity<>(prize, HttpStatus.CREATED);
+
         }
         catch (Exception e){
             log.info(e.getMessage());
@@ -44,4 +46,31 @@ public class PrizesController {
     public @ResponseBody List<Prizes> getAllPrizes(){
         return prizesService.getAllPrizes();
     }
+
+    //get prize by prize name
+    @GetMapping("/getPrizeName/{prizeName}")
+    public @ResponseBody
+    boolean getPrizeByPrizeName(@PathVariable(name="prizeName") String prizeName){
+        return prizesService.getByPrizeName(prizeName);
+    }
+
+    //modify prize by prize name
+    @PutMapping("/updatePrize/{prizeName}")
+    public @ResponseBody
+    ResponseEntity<Prizes>updatePrizeByPrizeName(@Valid @RequestBody PrizesDTO currentPrize, @PathVariable(name = "prizeName") String prizeName){
+        return new ResponseEntity<>(prizesService.updatePrize(prizeName, currentPrize), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/removePrize/{prizeName}")
+    public @ResponseBody
+    boolean removePrizeByPrizeName(@PathVariable(name = "prizeName")String prizeName){
+        return prizesService.removePrizeByPrizeName(prizeName);
+    }
+
+    @DeleteMapping("/removeAllPrizes")
+    public @ResponseBody
+    boolean removeAllPrizes(){
+        return prizesService.removeAllPrizes();
+    }
+
 }

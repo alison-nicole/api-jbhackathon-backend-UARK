@@ -13,7 +13,6 @@ public interface PrizesRepository extends JpaRepository<Prizes, Integer> {
     boolean existsPrizesByPrizeName(String prizeName);
 
     Optional<Prizes> findPrizeByPrizeName(String prizeName);
-//    Optional<Prizes> findPrizeByPrizeNameIgnoreCase(String prizeName);
-//    Optional<Prizes> findPrizeByMonetaryValue(String prizeMonetaryValue);
-//    List<Prizes> findAllByHackathonEventID(Integer hackathonEventID);
+    Optional<Prizes> findPrizeByPrizeNameIgnoreCase(String prizeName);
+
 }
