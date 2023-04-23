@@ -37,7 +37,7 @@ public class SignupService {
 
         var participant = createParticipantFromForm(participantRequest);
         participant = participantRepository.save(participant);
-        if (!participantRequest.getTeamName().isEmpty()) {
+        if (!participantRequest.getTeamName().isEmpty()) { //the participant has a team ?
             Optional<Team> teamOptional = teamRepository.findTeamByTeamName(participantRequest.getTeamName());
             if(teamOptional.isPresent()) {
                 saveParticipantToTeam(participant, teamOptional.get());
@@ -54,10 +54,11 @@ public class SignupService {
         sendRegistrationConfirmationEmail(participant);
 
         return participant;
-    }
+  }
 
     public void manageParticipantsWithoutTeam(int hackathonEventID) {
         var listParticipants = participantRepository.findParticipantsByHackathonEventID(hackathonEventID);
+
         listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).collect(Collectors.toList());
 
         log.info("Distributing {} participants {hackathonEventId = {}}", listParticipants.size(), hackathonEventID);
@@ -83,16 +84,66 @@ public class SignupService {
         var participant = new Participant();
         participant.setFirstName(participantRequest.getFirstName());
         participant.setLastName(participantRequest.getLastName());
+        participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
+        participant.setClassSeniority(participantRequest.getClassSeniority());
+        participant.setDevType(participantRequest.getDevType());
+        participant.setPhoneNumber(participantRequest.getPhoneNumber());
+        participant.setTechStack(extractParticipantTechStack(participantRequest.getTechStack()));
+        participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
+        participant.setAccommodations(participantRequest.getAccommodations());
         participant.setMajor(participantRequest.getMajor());
         participant.setUniversityName(participantRequest.getUniversityName());
         participant.setGraduateYear(participantRequest.getGraduateYear());
         participant.setDiscordName(participantRequest.getDiscordName());
         participant.setTShirtSize(participantRequest.getTShirtSize());
-        participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
         participant.setGraduateIndicator(participantRequest.getIsGradStudent());
-        participant.setAccommodations(participantRequest.getAccommodations());
         participant.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
         return participant;
+    }
+
+    /** computes the score (strength metric) of a participant based on their class seniority
+     *  @param classSeniority a string indicating the class seniority
+     * @return an integer value representing the strength based on class seniority
+     * */
+
+    Integer computeParticipantScore(String classSeniority){
+        var participantScore = 0;
+
+
+        if(Objects.equals(classSeniority, "Freshman")){
+
+            participantScore = 1;
+        }
+        else if (Objects.equals(classSeniority, "Sophomore")) {
+            participantScore = 2;
+        }
+        else if (Objects.equals(classSeniority, "Junior")) {
+            participantScore = 3;
+
+        }
+        else if (Objects.equals(classSeniority, "Senior")) {
+            participantScore = 4;
+
+        }
+        else if (Objects.equals(classSeniority, "Graduate Student")){
+            participantScore = 5;
+        }
+        System.out.println(participantScore);
+
+        return participantScore;
+    }
+
+    /** extracts the participant's technical stack
+     *  @param participantTechStack a string array containing the participant's tech stack
+     * @return string containing the participant's tech stack
+     * */
+    String extractParticipantTechStack(String[] participantTechStack){
+        String techStack = "";
+        for(String iter:participantTechStack){
+            techStack = techStack + iter + ",";
+        }
+
+        return techStack;
     }
 
     void saveParticipantToTeam(Participant participant, Team team) {
@@ -214,6 +265,7 @@ public class SignupService {
     }
 
     void trim(SignUpFormDTO participantRequest) {
+
         participantRequest.setTeamName(participantRequest.getTeamName().trim());
         participantRequest.setFirstName(participantRequest.getFirstName().trim());
         participantRequest.setLastName(participantRequest.getLastName().trim());

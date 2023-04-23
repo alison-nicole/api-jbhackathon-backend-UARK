@@ -38,6 +38,29 @@ public class SignupFormDTOMock {
         SignUpFormDTO signUpFormDTO = new SignUpFormDTO();
         signUpFormDTO.setFirstName("First");
         signUpFormDTO.setLastName("Last");
+        signUpFormDTO.setClassSeniority("senior");
+        signUpFormDTO.setDevType("backend");
+        signUpFormDTO.setScore(null);
+        signUpFormDTO.setIsGradStudent(false);
+        signUpFormDTO.setSchoolEmailAddress("testemail@test.com");
+        signUpFormDTO.setAccommodations("Accommodations");
+        signUpFormDTO.setTeamName("");
+        signUpFormDTO.setTeamOpen(null);
+        signUpFormDTO.setTeamColorCode("");
+        signUpFormDTO.setTeamIconCode("");
+
+        return signUpFormDTO;
+    }
+
+    public static SignUpFormDTO getValidSignUpWithTechStackFormDTOWithoutTeam() {
+        SignUpFormDTO signUpFormDTO = new SignUpFormDTO();
+        signUpFormDTO.setFirstName("First");
+        signUpFormDTO.setLastName("Last");
+        signUpFormDTO.setClassSeniority("senior");
+        signUpFormDTO.setDevType("backend");
+        signUpFormDTO.setTechStack("Java","Angular","PostgreSQL");
+        signUpFormDTO.setScore(0);
+        signUpFormDTO.setPhoneNumber("123456789");
         signUpFormDTO.setIsGradStudent(false);
         signUpFormDTO.setSchoolEmailAddress("testemail@test.com");
         signUpFormDTO.setAccommodations("Accommodations");

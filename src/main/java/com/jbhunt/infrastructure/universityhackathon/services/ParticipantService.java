@@ -37,4 +37,8 @@ public class ParticipantService {
             return Collections.emptyList();
         }
     }
+
+    public List<Participant> getAllParticipants() {
+        return participantRepository.findAll();
+    }
 }

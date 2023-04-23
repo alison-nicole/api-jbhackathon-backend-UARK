@@ -8,6 +8,7 @@ import com.jbhunt.infrastructure.universityhackathon.mocks.SignupFormDTOMock;
 import com.jbhunt.infrastructure.universityhackathon.mocks.TeamMock;
 import com.jbhunt.infrastructure.universityhackathon.repository.*;
 import com.jbhunt.infrastructure.universityhackathon.repository.ParticipantRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @RunWith(MockitoJUnitRunner.class)
 public class SignupServiceTest {
 
@@ -102,10 +104,34 @@ public class SignupServiceTest {
 
         Assert.assertNotNull(createdParticipant);
         Assert.assertEquals(testParticipant, createdParticipant);
+        verifyNoMoreInteractions(mockParticipantRepository);
+        verifyNoMoreInteractions(mockHackathonEventService);
+    }
+
+    @Test
+    public void saveParticipantWithTechStackFromValidForm(){
+        //ARRANGE
+        var hackathonEvent = getHackathonEvent();
+        var testParticipant = ParticipantMock.getTestParticipantWithTechStack();
+
+        when(mockHackathonEventService.getCurrentHackathon()).thenReturn(hackathonEvent);
+        when(mockParticipantRepository.save(any(Participant.class))).thenReturn(ParticipantMock.getCreatedParticipant(testParticipant));
+
+        //ACT
+        Participant createdParticipant = signUpService.saveParticipant(SignupFormDTOMock.getValidSignUpWithTechStackFormDTOWithoutTeam());
+
+        //ASSERT
+        verify(mockHackathonEventService).getCurrentHackathon();
+        verify(mockParticipantRepository, times(2)).save(any(Participant.class));
+
+        Assert.assertNotNull(createdParticipant);
+        Assert.assertEquals(testParticipant, createdParticipant);
 
         verifyNoMoreInteractions(mockParticipantRepository);
         verifyNoMoreInteractions(mockHackathonEventService);
     }
+
+
 
     @Test
     public void saveValidFormWithCreatedTeam() {
@@ -170,7 +196,7 @@ public class SignupServiceTest {
         Assert.assertEquals(2, testTeam.getMemberCount().intValue());
 
         verifyNoMoreInteractions(mockParticipantRepository);
-        verifyNoMoreInteractions(mockHackathonEventService);;
+        verifyNoMoreInteractions(mockHackathonEventService);
     }
 
     @Test
@@ -241,7 +267,6 @@ public class SignupServiceTest {
         verifyNoMoreInteractions(mockParticipantRepository);
         verifyNoMoreInteractions(mockHackathonEventService);
     }
-
     @Test
     public void testManageParticipantsWithoutTeam() {
         var participantList = ParticipantMock.getListParticipantsWithoutTeam(4);
