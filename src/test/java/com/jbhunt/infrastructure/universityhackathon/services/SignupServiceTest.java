@@ -126,6 +126,7 @@ public class SignupServiceTest {
 
         Assert.assertNotNull(createdParticipant);
         Assert.assertEquals(testParticipant, createdParticipant);
+
         verifyNoMoreInteractions(mockParticipantRepository);
         verifyNoMoreInteractions(mockHackathonEventService);
     }

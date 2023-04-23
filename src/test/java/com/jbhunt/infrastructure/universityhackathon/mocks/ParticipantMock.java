@@ -31,6 +31,8 @@ public class ParticipantMock {
         participant.setTechStack(setParticipantTechStack());
         participant.setClassSeniority("senior");
         participant.setScore(4);
+        participant.setTShirtSize("s");
+        participant.setPhoneNumber("123456789");
         participant.setGraduateIndicator(false);
         participant.setSchoolEmailAddress("testemail@test.com");
         participant.setAccommodations("Accommodations");
@@ -49,7 +51,6 @@ public class ParticipantMock {
         participant.setSchoolEmailAddress("testemail@test.com");
         participant.setAccommodations("Accommodations");
         participant.setTeamID(null);
-
         participant.setHackathonEventID(1);
         return participant;
     }
@@ -66,12 +67,12 @@ public class ParticipantMock {
         }
         return participantList;
     }
-    static Set<String> setParticipantTechStack(){
-        Set<String> techStack = new HashSet<>();
-        techStack.add("Angular");
-        techStack.add("Java");
-        techStack.add("PostgreSQL");
-        return  techStack;
+
+
+    static String setParticipantTechStack(){
+        String techStack = "";
+        techStack = "Java, Angular, PostgreSQL";
+        return techStack;
     }
 
     public static Participant getCreatedParticipant(Participant participant) {

@@ -87,6 +87,7 @@ public class SignupService {
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
         participant.setClassSeniority(participantRequest.getClassSeniority());
         participant.setDevType(participantRequest.getDevType());
+        participant.setPhoneNumber(participantRequest.getPhoneNumber());
         participant.setTechStack(extractParticipantTechStack(participantRequest.getTechStack()));
         participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
         participant.setAccommodations(participantRequest.getAccommodations());
@@ -107,36 +108,41 @@ public class SignupService {
     //FIXME: add prev years of participation
     Integer computeParticipantScore(String classSeniority){
         var participantScore = 0;
-        if(Objects.equals(classSeniority, "freshman")){
+
+
+        if(Objects.equals(classSeniority, "Freshman")){
+
             participantScore = 1;
         }
-        else if (Objects.equals(classSeniority, "sophomore")) {
+        else if (Objects.equals(classSeniority, "Sophomore")) {
             participantScore = 2;
         }
-        else if (Objects.equals(classSeniority, "junior")) {
+        else if (Objects.equals(classSeniority, "Junior")) {
             participantScore = 3;
 
         }
-        else if (Objects.equals(classSeniority, "senior")) {
+        else if (Objects.equals(classSeniority, "Senior")) {
             participantScore = 4;
 
         }
-        else if (Objects.equals(classSeniority, "gradStudent")){
+        else if (Objects.equals(classSeniority, "Graduate Student")){
             participantScore = 5;
         }
+        System.out.println(participantScore);
 
         return participantScore;
     }
 
     /** extracts the participant's technical stack
      *  @param participantTechStack a string array containing the participant's tech stack
-     * @return set containing the participant's tech stack
+     * @return string containing the participant's tech stack
      * */
-    Set<String> extractParticipantTechStack(String[] participantTechStack){
-        Set<String> techStack = new HashSet<>();
+    String extractParticipantTechStack(String[] participantTechStack){
+        String techStack = "";
         for(String iter:participantTechStack){
-            techStack.add(iter);
+            techStack = techStack + iter + ",";
         }
+
         return techStack;
     }
 

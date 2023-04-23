@@ -58,8 +58,9 @@ public class SignupFormDTOMock {
         signUpFormDTO.setLastName("Last");
         signUpFormDTO.setClassSeniority("senior");
         signUpFormDTO.setDevType("backend");
-        signUpFormDTO.setTechStack("Python","Java","MongoDB");
-        signUpFormDTO.setScore(4);
+        signUpFormDTO.setTechStack("Java","Angular","PostgreSQL");
+        signUpFormDTO.setScore(0);
+        signUpFormDTO.setPhoneNumber("123456789");
         signUpFormDTO.setIsGradStudent(false);
         signUpFormDTO.setSchoolEmailAddress("testemail@test.com");
         signUpFormDTO.setAccommodations("Accommodations");

@@ -64,10 +64,13 @@ public class Participant {
     private Integer score;
 
     @Column(name = "PhoneNumber")
-    private String phonenumber;
+    private String phoneNumber;
 
-    @ElementCollection
     @Column(name = "TechStack")
-    private Set<String> techStack;
+    private String techStack;
+
+    //@ElementCollection
+//    @Column(name = "TechStack")
+//    private Set<String> techStack;
 
 }
