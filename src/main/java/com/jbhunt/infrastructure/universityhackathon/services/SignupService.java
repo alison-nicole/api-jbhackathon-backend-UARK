@@ -105,7 +105,7 @@ public class SignupService {
      *  @param classSeniority a string indicating the class seniority
      * @return an integer value representing the strength based on class seniority
      * */
-    //FIXME: add prev years of participation
+
     Integer computeParticipantScore(String classSeniority){
         var participantScore = 0;
 
