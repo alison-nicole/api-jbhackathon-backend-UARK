@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -62,11 +63,11 @@ public class Participant {
     @Column(name = "score")
     private Integer score;
 
+    @Column(name = "PhoneNumber")
+    private String phonenumber;
 
-    //TODO: add tech stack,
+    @ElementCollection
+    @Column(name = "TechStack")
+    private Set<String> techStack;
 
-
-//    public void setTechStack(String... strings) {
-//        techStack = strings;
-//    }
 }

@@ -30,7 +30,7 @@ public class SignUpFormDTO {
     private String tShirtSize;
 
 
-//    public void setTechStack(String...strings) {
-//        techStack = strings;
-//    }
+    public void setTechStack(String...strings) {
+        techStack = strings;
+    }
 }

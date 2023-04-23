@@ -8,6 +8,7 @@ import com.jbhunt.infrastructure.universityhackathon.mocks.SignupFormDTOMock;
 import com.jbhunt.infrastructure.universityhackathon.mocks.TeamMock;
 import com.jbhunt.infrastructure.universityhackathon.repository.*;
 import com.jbhunt.infrastructure.universityhackathon.repository.ParticipantRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @RunWith(MockitoJUnitRunner.class)
 public class SignupServiceTest {
 

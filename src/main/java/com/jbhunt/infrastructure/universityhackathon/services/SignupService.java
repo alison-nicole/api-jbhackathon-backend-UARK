@@ -87,7 +87,7 @@ public class SignupService {
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
         participant.setClassSeniority(participantRequest.getClassSeniority());
         participant.setDevType(participantRequest.getDevType());
-//        participant.setTechStack(participantRequest.getTechStack());
+        participant.setTechStack(extractParticipantTechStack(participantRequest.getTechStack()));
         participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
         participant.setAccommodations(participantRequest.getAccommodations());
         participant.setMajor(participantRequest.getMajor());
@@ -126,6 +126,18 @@ public class SignupService {
         }
 
         return participantScore;
+    }
+
+    /** extracts the participant's technical stack
+     *  @param participantTechStack a string array containing the participant's tech stack
+     * @return set containing the participant's tech stack
+     * */
+    Set<String> extractParticipantTechStack(String[] participantTechStack){
+        Set<String> techStack = new HashSet<>();
+        for(String iter:participantTechStack){
+            techStack.add(iter);
+        }
+        return techStack;
     }
 
     void saveParticipantToTeam(Participant participant, Team team) {
