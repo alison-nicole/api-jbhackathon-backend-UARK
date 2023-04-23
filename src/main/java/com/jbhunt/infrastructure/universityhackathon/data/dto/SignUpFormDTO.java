@@ -28,11 +28,6 @@ public class SignUpFormDTO {
     private String teamColorCode;
     private String teamIconCode;
     private String accommodations;
-    private String major;
-    private String universityName;
-    private Integer graduateYear;
-    private String discordName;
-    private String tShirtSize;
 
 
     public void setTechStack(String...strings) {
