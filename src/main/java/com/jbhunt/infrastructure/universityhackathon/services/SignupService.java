@@ -61,7 +61,6 @@ public class SignupService {
     public void manageParticipantsWithoutTeam(int hackathonEventID) {
         var listParticipants = participantRepository.findParticipantsByHackathonEventID(hackathonEventID);
 
-        //sort participants in increasing score level
         listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).sorted(Comparator.comparingInt(Participant::getScore)).collect(Collectors.toList());
 
         log.info("Distributing {} participants {hackathonEventId = {}}", listParticipants.size(), hackathonEventID);
@@ -76,7 +75,7 @@ public class SignupService {
         }
 
         int openSpots = (openTeams.size() * 6) - totalTakenSpotsOnOpenTeams;
-        createNeededTeams((int) Math.ceil(((double) listParticipants.size() - openSpots) / 6), openTeams);
+         createNeededTeams((int) Math.ceil(((double) listParticipants.size() - openSpots) / 6), openTeams);
         boolean done = false;
         while(!done) {
             done = distribute(listParticipants, openTeams);
@@ -94,15 +93,9 @@ public class SignupService {
         participant.setLastName(participantRequest.getLastName());
         participant.setSchoolEmailAddress(participantRequest.getSchoolEmailAddress());
         participant.setGraduate(participantRequest.getIsGradStudent());
-
-        //set participant class seniority
         participant.setClassSeniority(participantRequest.getClassSeniority());
-        //set participant developer type
         participant.setDevType(participantRequest.getDevType());
-        //set participant score
         participant.setScore(computeParticipantScore(participantRequest.getClassSeniority()));
-
-
         participant.setAccommodations(participantRequest.getAccommodations());
         participant.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
         return participant;
@@ -138,7 +131,6 @@ public class SignupService {
     void saveParticipantToTeam(Participant participant, Team team) {
         participant.setTeamID(team.getTeamID());
         team.setMemberCount(team.getMemberCount() + 1);
-        team.setTeamStrength(generateTeamStrength(teamService.getTeamMembers(team.getTeamID())));
         team.setGraduateCount(team.getGraduateCount() + (Boolean.TRUE.equals(participant.getGraduate()) ? 1 : 0));
         if (team.getMemberCount() == 1) team.setTeamOwnerID(participant.getParticipantID());
         else if (team.getMemberCount() == 6) team.setOpen(false);
@@ -171,9 +163,8 @@ public class SignupService {
 
     boolean distribute(List<Participant> listParticipants, List<Team> listTeams) {
         var participant = listParticipants.get(0);
-
-        var weakestTeam = listTeams.stream().min(Comparator.comparingDouble(Team::getTeamStrength));
-        weakestTeam.ifPresent(team -> {
+        var smallestTeam = listTeams.stream().min(Comparator.comparing(Team::getMemberCount));
+        smallestTeam.ifPresent(team -> {
             saveParticipantToTeam(participant,team);
             if(team.getMemberCount() == 6) {
                 listTeams.remove(team);
@@ -188,7 +179,7 @@ public class SignupService {
     /**
      * method
      * Generate Teams Strength
-     * @param: a list of objects of type pariticipant containing the members in the team
+     * @param: a list of objects of type participant containing the members in the team
      * @return: a numeric value of type double that represents the strength of the team
      * */
     public Double generateTeamStrength(List<Participant> participantsOnTeam){
