@@ -10,7 +10,6 @@ public class TeamMock {
         Team team1 = new Team();
         team1.setTeamName("TEST 1");
         team1.setTeamCode("123456");
-        team1.setTeamStrength(0.0);
         team1.setTeamColorCode("#ffffff");
         team1.setTeamIconCode("medal");
         team1.setTeamID(1);
@@ -51,7 +50,6 @@ public class TeamMock {
         return teamList;
     }
 
-    //TODO: added strength to see if it fixes the null value.
     public static List<Team> getTeamList(int numberTeams) {
         List<Team> teamList = new ArrayList<>();
         for(int i = 0; i < numberTeams; i++) {

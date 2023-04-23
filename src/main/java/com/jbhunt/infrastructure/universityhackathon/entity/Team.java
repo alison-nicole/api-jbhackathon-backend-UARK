@@ -23,7 +23,7 @@ public class Team {
     private String teamName;
 
     @Column(name="Score")
-    private Integer score; //array or string to score all scores?
+    private Integer score;
 
     @Column(name="TeamOwnerID")
     private Integer teamOwnerID;
@@ -49,7 +49,7 @@ public class Team {
     @Column(name="TeamIconCode")
     private String teamIconCode;
 
-    @Column(name = "TeamStrength")
+    @Transient
     private Double teamStrength;
 
 }

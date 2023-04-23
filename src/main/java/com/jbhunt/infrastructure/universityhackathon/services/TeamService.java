@@ -70,7 +70,7 @@ public class TeamService {
             // Basic info
             team.setHackathonEventID(hackathonEventID);
             team.setTeamCode(generateTeamCode());
-            //TODO: might call the set strength method so that when extra teams are needed the initial strength is zero and will be at the beginning of the list
+
             
             return teamRepository.save(team);
         } else {

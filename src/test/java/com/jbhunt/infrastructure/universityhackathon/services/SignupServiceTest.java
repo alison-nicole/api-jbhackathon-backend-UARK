@@ -67,8 +67,7 @@ public class SignupServiceTest {
         team1.setTeamIconCode("medal");
         team1.setTeamID(1);
         team1.setTeamOwnerID(1);
-        team1.setMemberCount(0);
-        team1.setTeamStrength(0.0);
+        team1.setMemberCount(1);
         team1.setGraduateCount(0);
         return team1;
     }
@@ -86,7 +85,6 @@ public class SignupServiceTest {
         return team1;
     }
 
-    //TODO: use this test to check a valid form for participants w/o a team
     @Test
     public void saveValidFormWithoutTeam() {
         //ARRANGE
@@ -243,20 +241,19 @@ public class SignupServiceTest {
         verifyNoMoreInteractions(mockParticipantRepository);
         verifyNoMoreInteractions(mockHackathonEventService);
     }
-    //TODO: uses this test to check distribution of participants w/o a team
     @Test
     public void testManageParticipantsWithoutTeam() {
-        var participantList = ParticipantMock.getListParticipantsWithoutTeam(4);
+        var participantList = ParticipantMock.getListParticipantsWithoutTeam(1);
+        var participantsInTeam  = ParticipantMock.getListCustomParticipantsWithTeam(1);
        // var memberList = ParticipantMock.getListCustomParticipantsWithTeam(2);
         var teamList = TeamMock.getTeamList(1);
         var testTeam = getTeamMock();
 
 
-
-
         when(mockParticipantRepository.findParticipantsByHackathonEventID(1)).thenReturn(participantList);
-
         when(mockParticipantRepository.save(any(Participant.class))).thenReturn(participantList.get(0));
+        when(mockTeamService.getTeamMembers(1)).thenReturn(participantsInTeam);
+
 
 //        //
 //        when(mockTeamService.getTeamMembers(1)).thenReturn(memberList);
@@ -272,8 +269,8 @@ public class SignupServiceTest {
 
         verify(mockParticipantRepository).findParticipantsByHackathonEventID(1);
         verify(mockTeamRepository).findAllByHackathonEventID(1);
-        verify(mockParticipantRepository, times(4)).save(any(Participant.class));
-        verify(mockTeamRepository, times(4)).save(any(Team.class));
+        verify(mockParticipantRepository, times(2)).save(any(Participant.class));
+        verify(mockTeamRepository, times(2)).save(any(Team.class));
 
 
         verifyNoMoreInteractions(mockParticipantRepository);
