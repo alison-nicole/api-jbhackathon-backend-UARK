@@ -16,4 +16,5 @@ public class TeamDTO {
     private String projectDescription;
     private String projectTechnologyDescription;
     private int publicIndicator;
+
 }

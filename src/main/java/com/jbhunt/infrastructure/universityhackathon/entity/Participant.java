@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -44,12 +45,32 @@ public class Participant {
     @Column(name="universityName")
     private String universityName;
 
-    @Column(name="graduateYear")
+    @Column(name="GraduateYear")
     private Integer graduateYear;
 
-    @Column(name="discordName")
+    @Column(name="DiscordName")
     private String discordName;
 
     @Column(name="tShirtSize")
     private String tShirtSize;
+
+    @Column(name = "ClassSeniority")
+    private String classSeniority;
+
+    @Column(name="DevType")
+    private String devType;
+
+    @Column(name = "score")
+    private Integer score;
+
+    @Column(name = "PhoneNumber")
+    private String phoneNumber;
+
+    @Column(name = "TechStack")
+    private String techStack;
+
+    //@ElementCollection
+//    @Column(name = "TechStack")
+//    private Set<String> techStack;
+
 }

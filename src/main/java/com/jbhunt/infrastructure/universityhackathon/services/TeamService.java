@@ -71,6 +71,10 @@ public class TeamService {
             team.setHackathonEventID(hackathonEventID);
             team.setTeamCode(generateTeamCode());
 
+
+            team.setTeamStrength(generateTeamStrength(getTeamMembers(team.getTeamID())));
+
+
             return teamRepository.save(team);
         } else {
             log.error("HACKATHON DOESN'T EXIST");
@@ -89,6 +93,24 @@ public class TeamService {
                 generateTeamCode = false;
         }
         return teamCode;
+    }
+    /**
+     * method
+     * Generate Teams Strength
+     * @param: a list of objects of type pariticipant containing the members in the team
+     * @return: a numeric value of type integer or double that represents the strength of the team
+     * */
+    public Integer generateTeamStrength(List<Participant> participantsOnTeam){
+        var teamStrength = 0;
+        var membersStrengthSum = 0;
+        //get the total sum of the strength of all participants in the team
+        for (Participant participant : participantsOnTeam){
+            membersStrengthSum += participant.getScore();
+        }
+
+        teamStrength = membersStrengthSum/participantsOnTeam.size();
+
+        return teamStrength;
     }
 
     public List<Team> getAllTeams() {

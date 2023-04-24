@@ -3,13 +3,18 @@ package com.jbhunt.infrastructure.universityhackathon.mocks;
 import com.jbhunt.infrastructure.universityhackathon.entity.Participant;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ParticipantMock {
     public static Participant getTestParticipant() {
         Participant participant = new Participant();
         participant.setFirstName("First");
         participant.setLastName("Last");
+        participant.setDevType("backend");
+        participant.setClassSeniority("senior");
+        participant.setScore(4);
         participant.setGraduateIndicator(false);
         participant.setSchoolEmailAddress("testemail@test.com");
         participant.setAccommodations("Accommodations");
@@ -17,6 +22,26 @@ public class ParticipantMock {
         participant.setHackathonEventID(1);
         return participant;
     }
+
+    public static Participant getTestParticipantWithTechStack() {
+        Participant participant = new Participant();
+        participant.setFirstName("First");
+        participant.setLastName("Last");
+        participant.setDevType("backend");
+        participant.setTechStack(setParticipantTechStack());
+        participant.setClassSeniority("senior");
+        participant.setScore(4);
+        participant.setTShirtSize("s");
+        participant.setPhoneNumber("123456789");
+        participant.setGraduateIndicator(false);
+        participant.setSchoolEmailAddress("testemail@test.com");
+        participant.setAccommodations("Accommodations");
+        participant.setTeamID(null);
+
+        participant.setHackathonEventID(1);
+        return participant;
+    }
+
 
     public static Participant getTestGraduateParticipant() {
         Participant participant = new Participant();
@@ -41,6 +66,13 @@ public class ParticipantMock {
             participantList.add(participant);
         }
         return participantList;
+    }
+
+
+    static String setParticipantTechStack(){
+        String techStack = "";
+        techStack = "Java, Angular, PostgreSQL";
+        return techStack;
     }
 
     public static Participant getCreatedParticipant(Participant participant) {

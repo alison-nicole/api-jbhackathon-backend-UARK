@@ -49,4 +49,7 @@ public class Team {
     @Column(name="TeamIconCode")
     private String teamIconCode;
 
+    @Transient
+    private Integer teamStrength;
+
 }
