@@ -37,11 +37,12 @@ public class SignupService {
 
         var participant = createParticipantFromForm(participantRequest);
         participant = participantRepository.save(participant);
-        if (!participantRequest.getTeamName().isEmpty()) { //the participant has a team ?
+        if (!participantRequest.getTeamName().isEmpty()) {
             Optional<Team> teamOptional = teamRepository.findTeamByTeamName(participantRequest.getTeamName());
             if(teamOptional.isPresent()) {
                 saveParticipantToTeam(participant, teamOptional.get());
             } else {
+
                 Team team = teamService.createTeam(participantRequest.getTeamName(),
                        participant.getParticipantID(), participantRequest.getTeamOpen(),
                         0, 0, participantRequest.getTeamColorCode(), participantRequest.getTeamIconCode());
@@ -59,7 +60,7 @@ public class SignupService {
     public void manageParticipantsWithoutTeam(int hackathonEventID) {
         var listParticipants = participantRepository.findParticipantsByHackathonEventID(hackathonEventID);
 
-        listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).collect(Collectors.toList());
+        listParticipants = listParticipants.stream().filter(participant -> participant.getTeamID() == null).sorted(Comparator.comparingInt(Participant::getScore)).collect(Collectors.toList());
 
         log.info("Distributing {} participants {hackathonEventId = {}}", listParticipants.size(), hackathonEventID);
         if(listParticipants.isEmpty()) return;
@@ -73,7 +74,7 @@ public class SignupService {
         }
 
         int openSpots = (openTeams.size() * 6) - totalTakenSpotsOnOpenTeams;
-        createNeededTeams((int) Math.ceil(((double) listParticipants.size() - openSpots) / 6), openTeams);
+         createNeededTeams((int) Math.ceil(((double) listParticipants.size() - openSpots) / 6), openTeams);
         boolean done = false;
         while(!done) {
             done = distribute(listParticipants, openTeams);
@@ -105,7 +106,6 @@ public class SignupService {
      *  @param classSeniority a string indicating the class seniority
      * @return an integer value representing the strength based on class seniority
      * */
-
     Integer computeParticipantScore(String classSeniority){
         var participantScore = 0;
 
@@ -128,7 +128,6 @@ public class SignupService {
         else if (Objects.equals(classSeniority, "Graduate Student")){
             participantScore = 5;
         }
-        System.out.println(participantScore);
 
         return participantScore;
     }
@@ -181,12 +180,37 @@ public class SignupService {
         var participant = listParticipants.get(0);
         var smallestTeam = listTeams.stream().min(Comparator.comparing(Team::getMemberCount));
         smallestTeam.ifPresent(team -> {
-            saveParticipantToTeam(participant, team);
-            if (team.getMemberCount() == 6) listTeams.remove(team);
+            saveParticipantToTeam(participant,team);
+            if(team.getMemberCount() == 6) {
+                listTeams.remove(team);
+            }
         });
         participantRepository.save(participant);
         listParticipants.remove(0);
         return (listParticipants.isEmpty());
+    }
+
+
+    /**
+     * method
+     * Generate Teams Strength
+     * @param: a list of objects of type participant containing the members in the team
+     * @return: a numeric value of type double that represents the strength of the team
+     * */
+    public Double generateTeamStrength(List<Participant> participantsOnTeam){
+        Double teamStrength = 0.0;
+        var membersStrengthSum = 0.0;
+        var teamSize = (double)participantsOnTeam.size();
+
+        if(participantsOnTeam.size() == 0)
+            return teamStrength;
+        for (Participant participant : participantsOnTeam){
+            membersStrengthSum += (double)participant.getScore();
+
+        }
+
+        teamStrength = membersStrengthSum/teamSize;
+        return teamStrength;
     }
 
     void sendRegistrationConfirmationEmail(Participant participant) {
