@@ -72,9 +72,6 @@ public class TeamService {
             team.setTeamCode(generateTeamCode());
 
 
-            team.setTeamStrength(generateTeamStrength(getTeamMembers(team.getTeamID())));
-
-
             return teamRepository.save(team);
         } else {
             log.error("HACKATHON DOESN'T EXIST");
