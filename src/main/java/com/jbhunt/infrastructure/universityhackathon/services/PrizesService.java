@@ -62,7 +62,6 @@ public class PrizesService {
 
 
     public Prizes savePrize(PrizesDTO administratorRequest) {
-        //TODO: should the request be validated/trimmed as the signup request (in signupService)
         var prize = createPrizeFromForm(administratorRequest);
         prize = prizesRepository.save(prize);
 
@@ -74,16 +73,13 @@ public class PrizesService {
         prize.setPrizeName(administratorRequest.getPrizeName());
         prize.setPrizeMonetaryValue(administratorRequest.getPrizeMonetaryValue());
         prize.setPrizeLink(administratorRequest.getPrizeLink());
-        prize.setPrizeImageCode(administratorRequest.getPrizeImageCode()); //Note: this saves an 'alias' for the image. if the image is a smartwatch , the alias will be a string 'smartwatch'
+        prize.setPrizeImageCode(administratorRequest.getPrizeImageCode());
         prize.setHackathonEventID(hackathonEventService.getCurrentHackathon().get(0).getHackathonEventID());
         return prize;
     }
     public boolean getByPrizeName(String prizeName){
         try{
             Optional<Prizes> prize = prizesRepository.findPrizeByPrizeNameIgnoreCase(prizeName);
-            //TODO: remove logs
-            log.info(prizeName);
-            log.info(prize.get().getPrizeName());
             return prize.isPresent();
         }
         catch (Exception e){
@@ -101,7 +97,6 @@ public class PrizesService {
             }
         }
         catch (Exception e){
-            log.info("prize does not exist");
             log.error(e.getMessage());
             return false;
         }
@@ -118,7 +113,6 @@ public class PrizesService {
 
     public Prizes updatePrize(String prizeName, PrizesDTO currentPrize) {
         Optional<Prizes> prizesOptional = prizesRepository.findPrizeByPrizeName(prizeName);
-        log.info("current prize name = "+ currentPrize.getPrizeName());
         if (prizesOptional.isPresent()){
             var prize = prizesOptional.get();
             prize.setPrizeName(currentPrize.getPrizeName());

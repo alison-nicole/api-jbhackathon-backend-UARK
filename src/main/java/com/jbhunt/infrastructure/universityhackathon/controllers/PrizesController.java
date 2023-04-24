@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
-//@RequestMapping(value = PRIZES)
 @RequiredArgsConstructor
 public class PrizesController {
     private final PrizesService prizesService;
@@ -31,7 +30,6 @@ public class PrizesController {
     public ResponseEntity<Prizes> savePrize(@Valid @RequestBody PrizesDTO newPrize){
         try{
             Prizes prize = prizesService.savePrize(newPrize);
-            log.info("prize saved");
             return new ResponseEntity<>(prize, HttpStatus.CREATED);
 
         }
