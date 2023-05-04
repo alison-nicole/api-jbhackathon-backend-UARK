@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><J.B. Hunt Hackathon Readme</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        h2 {
+            font-size: 20px;
+        }
+        h3 {
+            font-size: 18px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+        <h1>J.B. Hunt Hackathon Readme</h1>
+
+        <h2>Introduction</h2>
+        <p>
+        Welcome to the README file for the J.B. Hunt Hackathon API. This document provides an overview of the backend server, its setup, and usage instructions. Note that this file also contains instructions to run the client side of the J.B. Hunt platform.
+        </p>
+
+        <h2>Application Purpose</h2>
+        <p>
+        <ul>
+            <li>Users should be able to register for an upcoming Hackathon (Participant)</li>
+            <li>Users should be able to create and manage teams (Team)</li>
+            <li>Users should be able to judge teams (Judge)</li>
+            <li>Users should be able to manage Hackathons (Admin)</li>
+            <li>Users should be able to manage the prizes page(Admin)</li>
+            <li>User should be able to access external resources (Participants)</li>
+        </ul>
+        </p>
+        <h2>Getting Started</h2>
+        <p>
+            To run the application, the following is needed
+            <ul>
+            <li>Java 11</li>
+            <li>Maven 3.6.3</li>
+            <li>Add necessary environment variables - values provided by devs upon request</li>
+            <ul>
+                <li>username</li>
+                <li>password</li>
+                <li>email-apikey</li>
+
+            </ul>
+            </ul>
+
+        </p>
+
+        <h2>Installation</h2>
+        <ol>
+        <li>Clone the backend repository:
+        <pre>
+        <code>git clone https://github.com/alison-nicole/api-jbhackathon-backend-UARK</code>
+        </pre>
+        </li>
+        <li>Clone the frontend repository:
+        <pre>
+        <code>git clone https://github.com/alison-nicole/app-jbhackathon-frontend-UARK</code>
+        </pre>
+        </li>
+        </ol>
+
+        <h2>Server Configuration</h2>
+        <p>
+        Set up the run configuration:
+            <ol>
+                <li>In your IDE, open the "Edit configuration" tool</li>
+                <li>Add a new configuration and select "Spring Boot"</li>
+                <li>Name the configuration "Application"</li>
+                <li>For "Run on", select "Local machine" to run the server locally</li>
+                <li>For "Build and run" select Java 11</li>
+                <li>For "Active profiles" type "dev"</li>
+                <li>Go to the "Modify options" and select "Override configurations properties"</li>
+                <li>In the configuration properties, add the username, password, and email-api key provided by the developers</li>
+                <li>Apply changes and hit ok</li>
+            </ol>
+        This should take care of the configuration file to run the server.
+
+        </p>
+
+        <h2>Server Usage</h2>
+        <p>
+        To run the server locally, just run the Application configuration file that was set up in the Configuration step. Once the server is running locally, it can receive and handle requests from the client side.
+        </p>
+        <h2>Client Usage</h2>
+        <p>
+            To run the Angular client locally, open a terminal and enter the 'ng serve' command. This should run the client and provide access to an URL of the J.B. Hunt Hackathon website. Once the client is running, it can send requests to the server.
+        </p>
+
+
+</body>
+</html>
